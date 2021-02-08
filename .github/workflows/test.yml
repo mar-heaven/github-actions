@@ -22,13 +22,13 @@ jobs:
           pip install pytest
     - name: Generate coverage report
       run: |
+        echo ${{ matrix.python-version }}
         pip install pytest
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml -v test.py
     - name: Upload coverage to Codecov
       if: ${{ matrix.python-version }} == 3.8
       uses: codecov/codecov-action@v1
-      run: echo ${{ matrix.python-version }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
