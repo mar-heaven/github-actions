@@ -27,8 +27,8 @@ jobs:
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml -v test.py
     - name: Upload coverage to Codecov
-      if: Number(${{ matrix.python-version }}) == 3.8
       uses: codecov/codecov-action@v1
+      if: Number(${{ matrix.python-version }}) == 3.8
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
