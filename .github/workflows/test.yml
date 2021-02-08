@@ -17,22 +17,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        # Install TA-Lib
-          wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
-          tar -xzvf ta-lib-0.4.0-src.tar.gz
-          cd ta-lib
-          ./configure --prefix=/usr
-          make
-          sudo make install
-          cd ..
         # Install Test Deps
           pip install -U pip
-          pip install "numpy>=1.15.4"
-          pip install TA-Lib
-          pip install coveralls
-          pip install -U setuptools
-          pip install ipython==5.3.0
-          pip install --prefer-binary .
+          pip pytest
+          pip install coverage
     - name: run test
       run: |
           rqalpha download-bundle
@@ -43,7 +31,6 @@ jobs:
       with:
         path: |
           $HOME/.cache/pip
-          $HOME/.rqalpha/bundle
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
   coveralls_finish:
     needs: run-test
