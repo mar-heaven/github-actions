@@ -22,9 +22,7 @@ jobs:
           pip install pytest
           pip install coverage
     - name: run test
-      run: |
-          rqalpha download-bundle
-          coverage run --source=rqalpha test.py
+      run: coverage run -m pytest test.py
     - name: Cache bundle
       # cache will change when runner.os or requirements.txt changed
       uses: actions/cache@v2
