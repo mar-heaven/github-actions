@@ -19,7 +19,7 @@ jobs:
       run: |
         # Install Test Deps
           pip install -U pip
-          pip pytest
+          pip install pytest
           pip install coverage
     - name: run test
       run: |
