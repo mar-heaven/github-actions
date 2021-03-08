@@ -1,35 +1,27 @@
-
-name: Rqalpha test
+name: push
 on: [push, pull_request]
 
 jobs:
-  run-test:
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8]
     steps:
-    # Checks out a copy of your repository on the ubuntu-latest machine
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
+
+    - name: Unit tests
+      run: make test
+
+    - name: Coveralls
+      uses: AndreMiras/coveralls-python-action@develop
       with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        # Install Test Deps
-          pip install -U pip
-          pip install pytest
-    - name: Generate coverage report
-      run: |
-        echo ${{ matrix.python-version }}
-        pip install pytest
-        pip install pytest-cov
-        pytest --cov=./ --cov-report=xml -v test.py
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      if: Number(${{ matrix.python-version }}) == 3.8
+        parallel: true
+        flag-name: Unit Test
+
+  coveralls_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: AndreMiras/coveralls-python-action@develop
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
+        parallel-finished: true

@@ -1,0 +1,10 @@
+[html]
+directory = rqalpha_test_coverage_report
+title = rqalpha_coverage_report
+
+[run]
+source = rqalpha
+relative_files = True
+
+[report]
+omit = */examples/*
